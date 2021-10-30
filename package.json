@@ -1,0 +1,25 @@
+{
+    "name": "client",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "npm run clean:dist & npm run copy:dist & parcel build src/index.html",
+        "start": "npm run clean:dist & npm run copy:dist & parcel src/index.html ",
+        "clean:dist": "rimraf dist",
+        "copy:dist": "ncp public dist"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.15.8",
+        "@babel/preset-env": "^7.15.8",
+        "npc": "^0.0.1",
+        "parcel": "^2.0.0",
+        "parcel-bundler": "^1.12.5",
+        "rimraf": "^3.0.2",
+        "sass": "^1.43.3",
+        "typescript": "^4.4.4"
+    },
+    "dependencies": {
+        "phaser": "^3.55.2"
+    }
+}
