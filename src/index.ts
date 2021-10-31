@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { IslandsMainScene } from "./scene/islands/IslandsMainScene";
 import { FPSScene } from "./scene/map-first/FPSScene";
 import { BootScene, WorldScene } from "./scene/map-first/TypeScene";
 
@@ -21,8 +22,8 @@ import { BootScene, WorldScene } from "./scene/map-first/TypeScene";
 
 const game: Phaser.Game = new Phaser.Game({
   type: Phaser.AUTO,
-  width: 800,
-  height: 400,
+  width: 1600,
+  height: 1000,
   zoom: 1,
   pixelArt: true,
   physics: {
@@ -34,5 +35,6 @@ const game: Phaser.Game = new Phaser.Game({
       },
     },
   },
-  scene: [BootScene, WorldScene, FPSScene],
+  // scene: [BootScene, WorldScene, FPSScene],
+  scene: [IslandsMainScene],
 });
