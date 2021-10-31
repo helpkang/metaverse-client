@@ -21,7 +21,8 @@ export class IslandsMainScene extends Phaser.Scene {
         this.load.image('Boat1', base+'Boat1.png');
         this.load.image('Boat2', base+'Boat2.png');
         this.load.image('Sand', base+'Sand.png');
-        noise.seed(Math.random());
+        noise.seed(0.12345);
+        // noise.seed(Math.random());
         this.cursors = this.input.keyboard.createCursorKeys();
     }
      create() {
