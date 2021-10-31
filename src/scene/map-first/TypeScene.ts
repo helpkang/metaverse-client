@@ -91,7 +91,7 @@ export class WorldScene extends Phaser.Scene {
     });
 
     // our player sprite created through the phycis system
-    this.player = this.physics.add.sprite(50, 100, "player", 6);
+    this.player = this.physics.add.sprite(map.widthInPixels/2, map.heightInPixels/2, "player", 6);
 
     // don't go out of the map
     this.physics.world.bounds.width = map.widthInPixels;
