@@ -1,89 +1,74 @@
-import perlin from '../../lib/perlin'
-const noise = perlin();
+import perlin from "../../lib/perlin";
+import { DrawHelper } from "./DrawHelper";
+import { ImageLoaderHelper } from "./ImageLoaderHelper";
+import { ModeUpdateHelper, MoveXY } from "./ModeUpdateHelper";
 
-const speed = 1;
+export const noise = perlin();
 
-const tilesize = 16;
-let offsetX = 0;
-let offsetY = 0;
+export class IslandsMainScene extends Phaser.Scene implements MoveXY {
+  speed = 1;
+  tilesize = 16;
+  offsetX = 0;
+  offsetY = 0;
 
-export class IslandsMainScene extends Phaser.Scene {
-    
-    cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-    
-    preload() {
-        const base = 'assets/image/kaleidawave.github.io/islands/'
-        this.load.image('Grass', base+'Grass.png');
-        this.load.image('Tree1', base+'Tree1.png');
-        this.load.image('Tree2', base+'Tree2.png');
-        this.load.image('Tree3', base+'Tree3.png');
-        this.load.image('Sea', base+'Sea.png');
-        this.load.image('Boat1', base+'Boat1.png');
-        this.load.image('Boat2', base+'Boat2.png');
-        this.load.image('Sand', base+'Sand.png');
-        noise.seed(0.12345);
-        // noise.seed(Math.random());
-        this.cursors = this.input.keyboard.createCursorKeys();
+  modeUpdateHelper: ModeUpdateHelper;
+  drawHelper: DrawHelper;
+  preload() {
+    this.imageLoad();
+    this.createRandom();
+  }
+
+  create() {
+    this.createMoveHelper();
+    this.createDrawHelper();
+    this.useDrawHelperDraw();
+  }
+
+  update() {
+    if (this.moveAndGetMoveResult()) {
+      this.useDrawHelperDraw();
     }
-     create() {
-        this.draw(this);
-    }
-    
-     update() {
-        if (this.cursors.left.isDown) {
-            offsetX -= speed;
-        } else if (this.cursors.right.isDown) {
-            offsetX += speed;
-        } else if (this.cursors.up.isDown) {
-            offsetY -= speed;
-        } else if (this.cursors.down.isDown) {
-            offsetY += speed;
-        } else {
-            return;
-        }
-        this.draw(this);
-    }
-    
-     draw(scene) {
-    
-        scene.add.displayList.removeAll();
-        const {width, height} = this.cameras.default;
-        for (let y = 0; y < (height / tilesize); y++) {
-            const posY = (y * tilesize) + 8;
-            const offsetY_Y = (y + offsetY) / 20
-            for (let x = 0; x < (width / tilesize); x++) {
-                const posX = (x * tilesize) + 8;
-    
-                let value = noise.simplex2((x + offsetX) / 20, offsetY_Y);
-                if (between(value, -1, 1)) {
-                    scene.add.image(posX, posY, 'Grass') //.setAlpha(Math.abs(value + 1.5));
-                } else if (between(value, 1, 1.3)) {
-                    scene.add.image(posX, posY, 'Sand');
-                } else {
-                    scene.add.image(posX, posY, 'Sea') //.setAlpha(Math.abs(1 - (value / 2)));
-                }
-    
-                if (between(value, 0.2, 0.201)) {
-                    scene.add.image(posX, posY, 'Boat1');
-                } else if (between(value, 0.201, 0.2015)) {
-                    scene.add.image(posX, posY, 'Boat2');
-                } else if (between(value, -1, -0.65)) {
-                    const value2 = parseInt(value.toString().slice(-1));
-                    if (value2 > 6) {
-                        scene.add.image(posX, posY, 'Tree1');
-                    } else if (value2 > 3) {
-                        scene.add.image(posX, posY, 'Tree2');
-                    } else {
-                        scene.add.image(posX, posY, 'Tree3');
-                    }
-    
-                }
-            }
-        }
-    }
-    
+  }
+
+  moveX(x: number) {
+    this.offsetX += x;
+  }
+
+  moveY(y: number) {
+    this.offsetY += y;
+  }
+
+  private moveAndGetMoveResult() {
+    return this.modeUpdateHelper.move();
+  }
+
+  private imageLoad() {
+    new ImageLoaderHelper(this).imageLoad();
+  }
+
+  private createRandom() {
+    noise.seed(0.12345);
+    //랜덤하게 생성 하려면 아래를 사용
+    // noise.seed(Math.random());
+  }
+
+  private createDrawHelper() {
+    this.drawHelper = new DrawHelper(this.tilesize, this);
+  }
+
+  private createMoveHelper() {
+    this.modeUpdateHelper = new ModeUpdateHelper(
+      this.input.keyboard.createCursorKeys(),
+      this,
+      this.speed
+    );
+  }
+
+  private useDrawHelperDraw() {
+    this.drawHelper.draw(this.offsetX, this.offsetY);
+  }
 }
 
-function between(value1, value2, value3) {
-   return (value2 < value1 && value1 < value3)
+export function between(value1, value2, value3) {
+  return value2 < value1 && value1 < value3;
 }
