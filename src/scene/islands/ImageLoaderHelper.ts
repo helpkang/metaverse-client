@@ -4,6 +4,19 @@ export class ImageLoaderHelper {
     constructor(private scene: Phaser.Scene) { }
 
     imageLoad() {
+        this.backgroundLoad();
+        // our two characters
+        this.spriteLoad();
+    }
+
+    private spriteLoad() {
+        this.scene.load.spritesheet("player", "assets/image/RPG_assets.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        });
+    }
+
+    private backgroundLoad() {
         const base = "assets/image/kaleidawave.github.io/islands/";
         this.scene.load.image("Grass", base + "Grass.png");
         this.scene.load.image("Tree1", base + "Tree1.png");
@@ -13,10 +26,5 @@ export class ImageLoaderHelper {
         this.scene.load.image("Boat1", base + "Boat1.png");
         this.scene.load.image("Boat2", base + "Boat2.png");
         this.scene.load.image("Sand", base + "Sand.png");
-        // our two characters
-        this.scene.load.spritesheet("player", "/assets/image/RPG_assets.png", {
-            frameWidth: 16,
-            frameHeight: 16,
-        });
     }
 }
