@@ -35,6 +35,6 @@ const game: Phaser.Game = new Phaser.Game({
       },
     },
   },
-  // scene: [BootScene, WorldScene, FPSScene],
-  scene: [IslandsMainScene],
+  scene: [BootScene, WorldScene, FPSScene],
+  // scene: [IslandsMainScene],
 });
