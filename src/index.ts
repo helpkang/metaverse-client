@@ -19,11 +19,22 @@ import { BootScene, WorldScene } from "./scene/map-first/TypeScene";
 //       }
 //   }
 // });
+// const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
+// const DEFAULT_HEIGHT = 720 // any height you want
+// const DEFAULT_WIDTH = ratio * DEFAULT_HEIGHT
 
 const game: Phaser.Game = new Phaser.Game({
   type: Phaser.AUTO,
-  width: 1600,
-  height: 1000,
+  
+  // width: 1600,
+  // height: 1000,
+  scale: {
+    mode: Phaser.Scale.RESIZE,
+    // Center vertically and horizontally
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    // width: DEFAULT_WIDTH,
+    // height: DEFAULT_HEIGHT,
+  },
   zoom: 1,
   pixelArt: true,
   physics: {
@@ -38,3 +49,4 @@ const game: Phaser.Game = new Phaser.Game({
   scene: [BootScene, WorldScene, FPSScene],
   // scene: [IslandsMainScene],
 });
+
